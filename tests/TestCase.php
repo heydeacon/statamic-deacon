@@ -24,16 +24,12 @@ abstract class TestCase extends AddonTestCase
         $router->get('/antlers', fn () => view('antlers'));
         $router->get('/blade', fn () => view('blade'));
 
-        // A site that gives each request a Content Security Policy nonce, the way Laravel's
-        // docs and spatie/laravel-csp do it.
-        $router->get('/antlers-with-nonce', function () {
+        $router->get('/antlers-with-vite-nonce', function () {
             Vite::useCspNonce('n0nce');
 
             return view('antlers');
         });
 
-        // A site on spatie/laravel-csp with its own nonce generator, which binds the request's
-        // nonce as csp-nonce.
         $router->get('/antlers-with-spatie-nonce', function () {
             app()->instance('csp-nonce', 'sp4tie');
 

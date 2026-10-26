@@ -12,7 +12,7 @@ class Deacon extends Tags
     private const LOADER_SRC = 'https://heydeacon.com/widget/v1/loader.js';
 
     private const MISSING_KEY = 'statamic-deacon: the key is missing, so the page has no Deacon widget. '
-        .'Set DEACON_KEY in .env, or key in config/deacon.php. In Deacon, open Install (the button at '
+        .'Set DEACON_KEY in .env, or the key in config/deacon.php. In Deacon, open Install (the button at '
         .'the top of the dashboard) and copy the data-key value from the snippet. It starts with pk_.';
 
     /**
@@ -34,7 +34,7 @@ class Deacon extends Tags
 
         if ($context !== null && ! $this->isContext($context)) {
             throw new InvalidArgumentException(
-                'statamic-deacon: context in config/deacon.php must be an array of names to strings, '
+                'statamic-deacon: context in config/deacon.php must be an array whose values are strings, '
                 .'numbers or booleans.'
             );
         }

@@ -42,7 +42,7 @@ class WidgetTagTest extends TestCase
     }
 
     private const MISSING_KEY = 'statamic-deacon: the key is missing, so the page has no Deacon widget. '
-        .'Set DEACON_KEY in .env, or key in config/deacon.php. In Deacon, open Install (the button at '
+        .'Set DEACON_KEY in .env, or the key in config/deacon.php. In Deacon, open Install (the button at '
         .'the top of the dashboard) and copy the data-key value from the snippet. It starts with pk_.';
 
     /**
@@ -112,14 +112,14 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
-    public function it_carries_the_content_security_policy_nonce_when_the_site_gives_each_request_one(): void
+    public function it_carries_the_nonce_vite_use_csp_nonce_gives_the_request(): void
     {
         config(['deacon.key' => 'pk_test123']);
 
         $this->assertSame(
             '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" async '
             .'nonce="n0nce"></script>',
-            $this->renderedTag('/antlers-with-nonce'),
+            $this->renderedTag('/antlers-with-vite-nonce'),
         );
     }
 
@@ -161,14 +161,14 @@ class WidgetTagTest extends TestCase
 
     #[Test]
     #[DataProvider('wrongContexts')]
-    public function it_refuses_a_context_that_isnt_names_to_strings_numbers_or_booleans(mixed $context): void
+    public function it_refuses_a_context_whose_values_arent_strings_numbers_or_booleans(mixed $context): void
     {
         config(['deacon.key' => 'pk_test123', 'deacon.context' => $context]);
 
         $this->assertSame(
             [
                 \InvalidArgumentException::class,
-                'statamic-deacon: context in config/deacon.php must be an array of names to strings, '
+                'statamic-deacon: context in config/deacon.php must be an array whose values are strings, '
                 .'numbers or booleans.',
             ],
             $this->renderingError(),
