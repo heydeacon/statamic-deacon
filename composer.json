@@ -1,0 +1,67 @@
+{
+    "name": "heydeacon/statamic-deacon",
+    "description": "Statamic addon that adds Deacon, an AI support chat that answers from your docs, to every page.",
+    "type": "statamic-addon",
+    "keywords": [
+        "statamic",
+        "statamic-addon",
+        "deacon",
+        "chat widget",
+        "support",
+        "ai",
+        "chatbot",
+        "ai-chatbot",
+        "ask-ai",
+        "support-chat"
+    ],
+    "homepage": "https://heydeacon.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Deacon",
+            "email": "hello@heydeacon.com",
+            "homepage": "https://heydeacon.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/heydeacon/statamic-deacon/issues",
+        "source": "https://github.com/heydeacon/statamic-deacon"
+    },
+    "require": {
+        "php": "^8.3",
+        "statamic/cms": "^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "phpunit/phpunit": "^12.0 || ^13.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "HeyDeacon\\StatamicDeacon\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HeyDeacon\\StatamicDeacon\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Deacon",
+            "description": "Adds Deacon, an AI support chat that answers from your docs, to every page."
+        },
+        "laravel": {
+            "providers": [
+                "HeyDeacon\\StatamicDeacon\\ServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
