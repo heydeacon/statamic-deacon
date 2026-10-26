@@ -20,6 +20,17 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_prints_the_same_tag_from_a_blade_layout(): void
+    {
+        config(['deacon.key' => 'pk_test123']);
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" async></script>',
+            $this->renderedTag('/blade'),
+        );
+    }
+
+    #[Test]
     public function it_takes_the_key_from_deacon_key_when_config_has_none(): void
     {
         $this->bootWithEnvironmentKey('pk_from_env');

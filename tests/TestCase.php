@@ -22,6 +22,7 @@ abstract class TestCase extends AddonTestCase
     protected function defineRoutes($router): void
     {
         $router->get('/antlers', fn () => view('antlers'));
+        $router->get('/blade', fn () => view('blade'));
 
         // A site that gives each request a Content Security Policy nonce, the way Laravel's
         // docs and spatie/laravel-csp do it.
