@@ -31,6 +31,14 @@ abstract class TestCase extends AddonTestCase
 
             return view('antlers');
         });
+
+        // A site on spatie/laravel-csp with its own nonce generator, which binds the request's
+        // nonce as csp-nonce.
+        $router->get('/antlers-with-spatie-nonce', function () {
+            app()->instance('csp-nonce', 'sp4tie');
+
+            return view('antlers');
+        });
     }
 
     protected function tearDown(): void

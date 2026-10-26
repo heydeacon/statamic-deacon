@@ -124,6 +124,18 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_carries_the_nonce_spatie_laravel_csp_gives_the_request(): void
+    {
+        config(['deacon.key' => 'pk_test123']);
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" async '
+            .'nonce="sp4tie"></script>',
+            $this->renderedTag('/antlers-with-spatie-nonce'),
+        );
+    }
+
+    #[Test]
     public function it_refuses_a_page_views_that_isnt_true_or_false(): void
     {
         config(['deacon.key' => 'pk_test123', 'deacon.page_views' => 'false']);

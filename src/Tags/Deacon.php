@@ -53,7 +53,22 @@ class Deacon extends Tags
             $attributes['data-no-page-views'] = true;
         }
 
-        return $this->loaderTag($attributes, Vite::cspNonce());
+        return $this->loaderTag($attributes, $this->cspNonce());
+    }
+
+    /**
+     * The request's Content Security Policy nonce: the one Laravel's Vite::useCspNonce() set,
+     * else the one spatie/laravel-csp binds as csp-nonce, or null when the site has no nonce.
+     */
+    private function cspNonce(): ?string
+    {
+        $nonce = Vite::cspNonce();
+
+        if ($nonce === null && app()->bound('csp-nonce')) {
+            $nonce = app('csp-nonce');
+        }
+
+        return is_string($nonce) ? $nonce : null;
     }
 
     /**
