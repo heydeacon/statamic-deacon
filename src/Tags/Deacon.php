@@ -19,8 +19,9 @@ class Deacon extends Tags
     public function index(): string
     {
         $key = config('deacon.key');
+        $key = is_string($key) ? trim($key) : '';
 
-        if (! is_string($key) || trim($key) === '') {
+        if ($key === '') {
             Log::warning(self::MISSING_KEY);
 
             return '';

@@ -56,4 +56,15 @@ class WidgetTagTest extends TestCase
         $this->assertSame('', $this->renderedTag());
         Log::shouldHaveReceived('warning')->once()->with(self::MISSING_KEY);
     }
+
+    #[Test]
+    public function it_trims_spaces_pasted_around_the_key(): void
+    {
+        config(['deacon.key' => "  pk_test123\n"]);
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" async></script>',
+            $this->renderedTag(),
+        );
+    }
 }
