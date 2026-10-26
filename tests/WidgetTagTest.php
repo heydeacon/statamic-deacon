@@ -74,6 +74,21 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_a_context_value_that_looks_like_html_as_it_was_written(): void
+    {
+        config([
+            'deacon.key' => 'pk_test123',
+            'deacon.context' => ['note' => '</script><b>"hi" &amp;</b>'],
+        ]);
+
+        $document = new \DOMDocument;
+        $document->loadHTML($this->renderedTag(), LIBXML_NOERROR);
+        $script = $document->getElementsByTagName('script')->item(0);
+
+        $this->assertSame('{"note":"</script><b>\"hi\" &amp;</b>"}', $script?->getAttribute('data-context'));
+    }
+
+    #[Test]
     public function it_trims_spaces_pasted_around_the_key(): void
     {
         config(['deacon.key' => "  pk_test123\n"]);
