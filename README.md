@@ -35,7 +35,7 @@ Deacon only runs on the sites listed on Install. A listed domain covers its subd
 
 When you run the site on your own machine, at `example.test` with Herd or Valet, or on `localhost`, Install notices the widget there and lets you add it in one click. Chats on a development address don't count towards your plan.
 
-If you tell Deacon who is signed in, with the `window.deaconUser` script from [Deacon's install guide](https://heydeacon.com/agent/install.md), put that script above `{{ deacon }}` in the head, because the widget reads it as it starts.
+If your site passes Deacon the details of whoever is logged in, with the `window.deaconUser` script from [Deacon's install guide](https://heydeacon.com/agent/install.md), put that script above `{{ deacon }}` in the head, because the widget reads it as it starts.
 
 ## Options
 
@@ -65,7 +65,14 @@ return [
 
 If your site gives each request a nonce, the tag carries it. It reads the nonce from Laravel's `Vite::useCspNonce()`, or from [spatie/laravel-csp](https://github.com/spatie/laravel-csp), which binds it as `csp-nonce`.
 
-The policy also needs Deacon's address, `https://heydeacon.com`, in `script-src`, `connect-src` and `frame-src`, and `'unsafe-inline'` in `style-src`, because the widget writes its styles where a nonce can't reach. Keep the nonce out of `style-src`, since a nonce there makes browsers ignore `'unsafe-inline'`.
+The policy also needs Deacon's address, `https://heydeacon.com`, in `script-src`, `connect-src` and `frame-src`, and `'unsafe-inline'` in `style-src`, because the widget writes its styles where a nonce can't reach. Keep the nonce out of `style-src`, since a nonce there makes browsers ignore `'unsafe-inline'`:
+
+```text
+script-src 'self' 'nonce-…' https://heydeacon.com;
+style-src 'self' 'unsafe-inline';
+connect-src 'self' https://heydeacon.com;
+frame-src https://heydeacon.com
+```
 
 ## Opening the chat from your own button
 
@@ -79,7 +86,7 @@ The tag prints the same tag Install gives you:
 <script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_your_widget_key" async></script>
 ```
 
-It loads in the background without holding up the page. Works with Statamic 6.
+It loads in the background without holding up the page. Works with Statamic 6, on PHP 8.2 and later.
 
 ## License
 
