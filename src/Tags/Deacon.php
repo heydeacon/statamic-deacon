@@ -27,6 +27,30 @@ class Deacon extends Tags
             return '';
         }
 
-        return '<script src="'.self::LOADER_SRC.'" data-key="'.$key.'" async></script>';
+        $context = config('deacon.context');
+
+        $attributes = ['data-key' => $key];
+
+        if ($context !== null) {
+            $attributes['data-context'] = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        }
+
+        return $this->loaderTag($attributes);
+    }
+
+    /**
+     * The tag Install gives, with any of its other attributes between the key and async.
+     *
+     * @param  array<string, string>  $attributes
+     */
+    private function loaderTag(array $attributes): string
+    {
+        $rendered = '';
+
+        foreach ($attributes as $name => $value) {
+            $rendered .= ' '.$name.'="'.e($value).'"';
+        }
+
+        return '<script src="'.self::LOADER_SRC.'"'.$rendered.' async></script>';
     }
 }

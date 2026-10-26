@@ -58,6 +58,22 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_passes_the_context_to_deacon_as_the_data_context_attribute(): void
+    {
+        config([
+            'deacon.key' => 'pk_test123',
+            'deacon.context' => ['site' => 'docs', 'version' => '3.2', 'beta' => true],
+        ]);
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" '
+            .'data-context="{&quot;site&quot;:&quot;docs&quot;,&quot;version&quot;:&quot;3.2&quot;,'
+            .'&quot;beta&quot;:true}" async></script>',
+            $this->renderedTag(),
+        );
+    }
+
+    #[Test]
     public function it_trims_spaces_pasted_around_the_key(): void
     {
         config(['deacon.key' => "  pk_test123\n"]);
