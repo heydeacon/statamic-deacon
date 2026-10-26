@@ -48,6 +48,7 @@
     "extra": {
         "statamic": {
             "name": "Deacon",
+            "slug": "deacon",
             "description": "Adds Deacon, an AI support chat that answers from your docs, to every page."
         },
         "laravel": {

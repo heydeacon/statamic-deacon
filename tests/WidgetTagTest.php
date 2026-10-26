@@ -16,4 +16,15 @@ class WidgetTagTest extends TestCase
             $this->renderedTag(),
         );
     }
+
+    #[Test]
+    public function it_takes_the_key_from_deacon_key_when_config_has_none(): void
+    {
+        $this->bootWithEnvironmentKey('pk_from_env');
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_from_env" async></script>',
+            $this->renderedTag(),
+        );
+    }
 }
