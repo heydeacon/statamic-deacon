@@ -111,6 +111,35 @@ class WidgetTagTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string, array{mixed}>
+     */
+    public static function wrongContexts(): array
+    {
+        return [
+            'a string' => ['plan=pro'],
+            'a list' => [['docs']],
+            'an array with a nested value' => [['plan' => ['tier' => 'pro']]],
+            'an array with a null value' => [['plan' => null]],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('wrongContexts')]
+    public function it_refuses_a_context_that_isnt_names_to_strings_numbers_or_booleans(mixed $context): void
+    {
+        config(['deacon.key' => 'pk_test123', 'deacon.context' => $context]);
+
+        $this->assertSame(
+            [
+                \InvalidArgumentException::class,
+                'statamic-deacon: context in config/deacon.php must be an array of names to strings, '
+                .'numbers or booleans.',
+            ],
+            $this->renderingError(),
+        );
+    }
+
     #[Test]
     public function it_trims_spaces_pasted_around_the_key(): void
     {

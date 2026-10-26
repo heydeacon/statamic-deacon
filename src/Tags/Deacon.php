@@ -31,6 +31,13 @@ class Deacon extends Tags
         $context = config('deacon.context');
         $pageViews = config('deacon.page_views', true);
 
+        if ($context !== null && ! $this->isContext($context)) {
+            throw new InvalidArgumentException(
+                'statamic-deacon: context in config/deacon.php must be an array of names to strings, '
+                .'numbers or booleans.'
+            );
+        }
+
         if (! is_bool($pageViews)) {
             throw new InvalidArgumentException('statamic-deacon: page_views in config/deacon.php must be true or false.');
         }
@@ -46,6 +53,24 @@ class Deacon extends Tags
         }
 
         return $this->loaderTag($attributes);
+    }
+
+    /**
+     * @phpstan-assert-if-true array<string, string|int|float|bool> $context
+     */
+    private function isContext(mixed $context): bool
+    {
+        if (! is_array($context)) {
+            return false;
+        }
+
+        foreach ($context as $name => $value) {
+            if (! is_string($name) || ! (is_string($value) || is_int($value) || is_float($value) || is_bool($value))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
