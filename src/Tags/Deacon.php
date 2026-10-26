@@ -3,6 +3,7 @@
 namespace HeyDeacon\StatamicDeacon\Tags;
 
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 use Statamic\Tags\Tags;
 
 class Deacon extends Tags
@@ -29,6 +30,10 @@ class Deacon extends Tags
 
         $context = config('deacon.context');
         $pageViews = config('deacon.page_views', true);
+
+        if (! is_bool($pageViews)) {
+            throw new InvalidArgumentException('statamic-deacon: page_views in config/deacon.php must be true or false.');
+        }
 
         $attributes = ['data-key' => $key];
 

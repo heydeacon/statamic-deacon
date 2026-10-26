@@ -60,4 +60,27 @@ abstract class TestCase extends AddonTestCase
     {
         return trim($this->get($path)->assertOk()->getContent());
     }
+
+    /**
+     * The class and message of the error that stopped the page rendering, under the view
+     * error the template engine wraps it in.
+     *
+     * @return array{class-string, string}|null
+     */
+    protected function renderingError(string $path = '/antlers'): ?array
+    {
+        $this->withoutExceptionHandling();
+
+        try {
+            $this->get($path);
+        } catch (\Throwable $error) {
+            while ($error->getPrevious() !== null) {
+                $error = $error->getPrevious();
+            }
+
+            return [$error::class, $error->getMessage()];
+        }
+
+        return null;
+    }
 }

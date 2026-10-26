@@ -101,6 +101,17 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_page_views_that_isnt_true_or_false(): void
+    {
+        config(['deacon.key' => 'pk_test123', 'deacon.page_views' => 'false']);
+
+        $this->assertSame(
+            [\InvalidArgumentException::class, 'statamic-deacon: page_views in config/deacon.php must be true or false.'],
+            $this->renderingError(),
+        );
+    }
+
+    #[Test]
     public function it_trims_spaces_pasted_around_the_key(): void
     {
         config(['deacon.key' => "  pk_test123\n"]);
