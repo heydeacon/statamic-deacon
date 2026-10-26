@@ -89,6 +89,18 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_holds_back_page_views_with_the_data_no_page_views_attribute(): void
+    {
+        config(['deacon.key' => 'pk_test123', 'deacon.page_views' => false]);
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" '
+            .'data-no-page-views async></script>',
+            $this->renderedTag(),
+        );
+    }
+
+    #[Test]
     public function it_trims_spaces_pasted_around_the_key(): void
     {
         config(['deacon.key' => "  pk_test123\n"]);

@@ -28,6 +28,7 @@ class Deacon extends Tags
         }
 
         $context = config('deacon.context');
+        $pageViews = config('deacon.page_views', true);
 
         $attributes = ['data-key' => $key];
 
@@ -35,20 +36,25 @@ class Deacon extends Tags
             $attributes['data-context'] = json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
 
+        if ($pageViews === false) {
+            $attributes['data-no-page-views'] = true;
+        }
+
         return $this->loaderTag($attributes);
     }
 
     /**
-     * The tag Install gives, with any of its other attributes between the key and async.
+     * The tag Install gives, with any of its other attributes between the key and async. An
+     * attribute that is true is written with no value, as async is.
      *
-     * @param  array<string, string>  $attributes
+     * @param  array<string, string|true>  $attributes
      */
     private function loaderTag(array $attributes): string
     {
         $rendered = '';
 
         foreach ($attributes as $name => $value) {
-            $rendered .= ' '.$name.'="'.e($value).'"';
+            $rendered .= $value === true ? ' '.$name : ' '.$name.'="'.e($value).'"';
         }
 
         return '<script src="'.self::LOADER_SRC.'"'.$rendered.' async></script>';
