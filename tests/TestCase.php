@@ -4,6 +4,7 @@ namespace HeyDeacon\StatamicDeacon\Tests;
 
 use HeyDeacon\StatamicDeacon\ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Vite;
 use Statamic\Testing\AddonTestCase;
 
 abstract class TestCase extends AddonTestCase
@@ -21,6 +22,14 @@ abstract class TestCase extends AddonTestCase
     protected function defineRoutes($router): void
     {
         $router->get('/antlers', fn () => view('antlers'));
+
+        // A site that gives each request a Content Security Policy nonce, the way Laravel's
+        // docs and spatie/laravel-csp do it.
+        $router->get('/antlers-with-nonce', function () {
+            Vite::useCspNonce('n0nce');
+
+            return view('antlers');
+        });
     }
 
     protected function tearDown(): void

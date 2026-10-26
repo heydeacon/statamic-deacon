@@ -101,6 +101,18 @@ class WidgetTagTest extends TestCase
     }
 
     #[Test]
+    public function it_carries_the_content_security_policy_nonce_when_the_site_gives_each_request_one(): void
+    {
+        config(['deacon.key' => 'pk_test123']);
+
+        $this->assertSame(
+            '<script src="https://heydeacon.com/widget/v1/loader.js" data-key="pk_test123" async '
+            .'nonce="n0nce"></script>',
+            $this->renderedTag('/antlers-with-nonce'),
+        );
+    }
+
+    #[Test]
     public function it_refuses_a_page_views_that_isnt_true_or_false(): void
     {
         config(['deacon.key' => 'pk_test123', 'deacon.page_views' => 'false']);

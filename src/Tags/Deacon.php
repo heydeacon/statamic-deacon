@@ -3,6 +3,7 @@
 namespace HeyDeacon\StatamicDeacon\Tags;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Vite;
 use InvalidArgumentException;
 use Statamic\Tags\Tags;
 
@@ -52,7 +53,7 @@ class Deacon extends Tags
             $attributes['data-no-page-views'] = true;
         }
 
-        return $this->loaderTag($attributes);
+        return $this->loaderTag($attributes, Vite::cspNonce());
     }
 
     /**
@@ -74,12 +75,12 @@ class Deacon extends Tags
     }
 
     /**
-     * The tag Install gives, with any of its other attributes between the key and async. An
-     * attribute that is true is written with no value, as async is.
+     * The tag Install gives, with any of its other attributes between the key and async, and
+     * the nonce after them. An attribute that is true is written with no value, as async is.
      *
      * @param  array<string, string|true>  $attributes
      */
-    private function loaderTag(array $attributes): string
+    private function loaderTag(array $attributes, ?string $nonce): string
     {
         $rendered = '';
 
@@ -87,6 +88,8 @@ class Deacon extends Tags
             $rendered .= $value === true ? ' '.$name : ' '.$name.'="'.e($value).'"';
         }
 
-        return '<script src="'.self::LOADER_SRC.'"'.$rendered.' async></script>';
+        $nonceAttribute = $nonce === null ? '' : ' nonce="'.e($nonce).'"';
+
+        return '<script src="'.self::LOADER_SRC.'"'.$rendered.' async'.$nonceAttribute.'></script>';
     }
 }
